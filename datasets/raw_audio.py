@@ -18,7 +18,7 @@ class raw_audio_Dataloader():
         self.transform = None
         
         
-        logx.msg(f"BraTS_mean_Dataloader, data_mode : {config.data_mode}, path : {self.config.img_dir}")
+        logx.msg(f"BraTS_mean_Dataloader, data_mode : {args.data_mode}, path : {self.config.img_dir}")
         dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,transform,self.config.build,split="train")
 
         train_indices, valid_indices = train_test_split(range(len(dataset)),test_size=self.config.valid_size,train_size=1-self.config.valid_size,
@@ -30,10 +30,10 @@ class raw_audio_Dataloader():
         self.len_train_data = len(train_dataset)
         self.len_valid_data = len(valid_dataset)
 
-        self.train_iterations = (self.len_train_data + self.config.batch_size - 1) // self.config.batch_size
-        self.valid_iterations = (self.len_valid_data + self.config.batch_size - 1) // self.config.batch_size
+        self.train_iterations = (self.len_train_data + self.args.batch_size - 1) // self.config.batch_size
+        self.valid_iterations = (self.len_valid_data + self.args.batch_size - 1) // self.config.batch_size
 
 
-        self.train_loader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True)
-        self.valid_loader = DataLoader(valid_dataset, batch_size=config.batch_size, shuffle=False) 
+        self.train_loader = DataLoader(train_dataset, batch_size=self.args.batch_size, shuffle=True)
+        self.valid_loader = DataLoader(valid_dataset, batch_size=self.args.batch_size, shuffle=False) 
         
