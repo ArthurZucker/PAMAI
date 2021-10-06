@@ -27,7 +27,7 @@ class MyModelHyperParameters:
     lr: float = 0.05
     # Momentum of the optimizer.
     momentum: float = 0.01
-    # Architecture to choose
+    # Architecture to choose, available are "denet (to come)", "sincnet (to come)", "leaf (to come)", "yolor (to come)"
     arch: str = "denet"
     # Dataset used for training
     dataset: str = "egyptian"
@@ -92,8 +92,8 @@ try:
 except ImportError:
     print(AutoResume)
 
+from utils.config import *
 from agents import *
-
 
 args.hparams.best_record = {
     "epoch": -1,
@@ -156,10 +156,10 @@ def main():
         global_rank=args.hparams.global_rank,
     )
     print(args)
-    exit(0)
-    # Set up the Arguments, Tensorboard Writer, Dataloader, Loss Fn, Optimizer
-    assert_and_infer_cfg(args)
-    prep_experiment(args)  # what does that do?
+
+    # # Set up the Arguments, Tensorboard Writer, Dataloader, Loss Fn, Optimizer
+    # assert_and_infer_cfg(args)
+    # prep_experiment(args)  # what does that do?
 
     # Create the Agent and pass all the configuration to it then run it..
     agent_class = globals()[args.agent]
