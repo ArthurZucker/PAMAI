@@ -1,0 +1,9 @@
+{
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "120",
+    ],
+}
