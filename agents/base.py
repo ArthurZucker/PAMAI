@@ -9,9 +9,12 @@ class BaseAgent:
     This base class will contain the base functions to be overloaded by any agent you will implement.
     """
 
-    def __init__(self, config):
+    def __init__(self, config,run):
         self.config = config
-        self.logger = logging.getLogger("Agent")
+        
+        # self.model =  ...(self.config)
+        # run.watch(self.model)
+
 
     def load_checkpoint(self, file_name):
         """
@@ -49,6 +52,7 @@ class BaseAgent:
         One epoch of training
         :return:
         """
+        # wandb.log({"loss": loss})
         raise NotImplementedError
 
     def validate(self):

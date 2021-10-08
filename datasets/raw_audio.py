@@ -5,7 +5,7 @@ from runx.logx import logx
 
 
 from sklearn.model_selection import train_test_split
-from raw_audio_dataset import raw_audio_dataset
+from datasets.raw_audio_dataset import raw_audio_dataset
 
 class raw_audio_Dataloader():
     """
