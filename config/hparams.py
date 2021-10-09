@@ -16,9 +16,9 @@ class hparams:
     # Dataset used for training
     dataset: str = "egyptian"
     # path to images in dataset
-    img_dir: str = "data/audio"
+    img_dir: str = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats"
     # annotation path 
-    annotation_file: str = "data/audio/labels.csv"
+    annotation_file: str = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats/FileInfo.csv"
     # Number of workers used for the dataloader
     num_workers: int = 8
     # Sampling rate of the raw audio
@@ -35,3 +35,11 @@ class hparams:
     epochs: int = 10
     # optimizer 
     optimizer: str = "RMSprop"
+
+
+@dataclass
+class sincnet:
+    """Hyperparameters of the sincnetmodel"""
+
+    # activation function
+    activation: str = "relu"

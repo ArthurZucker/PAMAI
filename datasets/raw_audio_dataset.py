@@ -12,7 +12,7 @@ class raw_audio_dataset(Dataset):
         """
         Initialises the audio dataset
         """
-        self.audio_files        = os.listdir(img_dir)
+        self.audio_files        = [f for f in os.scandir(img_dir) if ".WAV" in f]
         self.label              = read_csv(annotation_file)
         self.transform          = transform
         self.target_transform   = target_transform

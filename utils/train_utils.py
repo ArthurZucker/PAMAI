@@ -22,7 +22,7 @@ def adjust_learning_rate(optimizer, epoch, config, batch=None, nBatch=None, meth
 """
 Get activation function from str parameter
 """
-def get_act_fun(act_type):
+def get_act_func(act_type):
 
  if act_type=="relu":
     return nn.ReLU()
