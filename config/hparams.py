@@ -37,6 +37,8 @@ class hparams:
     epochs: int = 10
     # optimizer 
     optimizer: str = "RMSprop"
+    # loss
+    loss: str = "NNL"
     # optimization
     batch_size: int =128
     N_epochs=2900

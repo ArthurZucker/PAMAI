@@ -39,13 +39,10 @@ class DenetAgent(BaseAgent):
         self.data_loader = raw_audio_Dataloader(self.config)
 
         # define loss
-        self.loss = BinaryCrossEntropy()
+        self.loss = get_loss(config.loss)
 
         # define optimizers for both generator and discriminator
-        self.optimizer = torch.optim.SGD(self.model.parameters(),
-                                         lr=self.config.lr,
-                                         momentum=float(self.config.momentum),
-                                         nesterov=True)
+        self.optimizer = get_optimizer(config,self.model)
 
         # initialize counter
         self.current_epoch = 0

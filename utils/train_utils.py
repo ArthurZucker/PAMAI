@@ -32,10 +32,10 @@ def get_loss(args):
     return: criterion, criterion_val
     """
 
-    if args.loss == "":
-       pass
+    if args.loss == "NNL":
+       return nn.NLLLoss()
     else:
-       pass
+       print("Not implemented yet")
 
 
 """
@@ -80,6 +80,9 @@ def get_optimizer(args, net):
                                lr=args.lr,
                                weight_decay=args.weight_decay,
                                amsgrad=args.amsgrad)
+    elif args.optimizer == "Rmsprop":
+        optimizer = optim.RMSprop(param_groups,
+                                  lr=args.lr,alpha=0.95,eps=1e-8)
 
     else:
         raise ValueError('Not a valid optimizer')
