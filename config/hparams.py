@@ -12,7 +12,7 @@ class hparams:
     # Momentum of the optimizer.
     momentum: float = 0.01
     # Architecture to choose, available are "denet (to come)", "sincnet (to come)", "leaf (to come)", "yolor (to come)"
-    arch: str = "denet"
+    arch: str = "sincnet"
     #Agent to use, the agent has his own trining loop
     agent: str = "DenetAgent"
     # Dataset used for training

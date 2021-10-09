@@ -21,7 +21,7 @@ from tensorboardX import SummaryWriter
 from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy
 from utils.misc import print_cuda_statistics
 from utils.train_utils import adjust_learning_rate
-
+from utils.train_utils import get_net,get_loss,get_optimizer
 cudnn.benchmark = True
 
 
@@ -30,7 +30,8 @@ class DenetAgent(BaseAgent):
     def __init__(self, config,wandb):
         super().__init__(config,wandb)
         # define models
-        self.model = Denet(self.config)
+        self.model = get_net(config)
+        print(self.model)
         # Init experiment watcher
         self.wandb = wandb
         self.wandb.watch(self.model)
@@ -44,7 +45,6 @@ class DenetAgent(BaseAgent):
         self.optimizer = torch.optim.SGD(self.model.parameters(),
                                          lr=self.config.lr,
                                          momentum=float(self.config.momentum),
-                                         weight_decay=self.config.weight_decay,
                                          nesterov=True)
 
         # initialize counter

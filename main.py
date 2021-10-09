@@ -21,6 +21,7 @@ from simple_parsing import ArgumentParser
 # import hyperparameters
 from config.hparams import hparams
 from config.hparams import sincnet
+from utils.train_utils import get_net
 # from apex import amp
 # create a parser, as usual
 parser = ArgumentParser()
@@ -38,6 +39,7 @@ def main():
     run = wandb.init(config=vars(args.hparams), project="DENET-sweep run (testing code)")
     config = wandb.config
     print("INITIALIZED WANDB")
+    print(get_net(args.hparams))
     # Create the Agent and pass all the configuration to it then run it..
     agent_class = globals()[config.agent]
     agent = agent_class(config,run)

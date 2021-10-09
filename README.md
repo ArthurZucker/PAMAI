@@ -17,8 +17,9 @@ The original DENET code is in tensorflow, but I need to use both YOLOR and DENET
 Moreover, I am using my template implementation which allows to easly switch between model and data type, integrating this also requires a bit of work. 
 ## TODO 
 
-- [ ] Create dataset
-- [ ] Create dataloaders
+- [x] Create dataset
+- [ ] Add `get_model`, `get_loss`, `get_optimizer` from the names
+- [x] Create dataloaders
 - [ ] Convert both [__init__.py](./__init__.py) and [layers.py](./layers.py) to pytorch (since its now in tensorflow)
 - [ ] Create model 
 - [ ] Create trainig agent

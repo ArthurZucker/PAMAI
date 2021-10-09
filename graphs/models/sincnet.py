@@ -16,10 +16,10 @@ from utils.train_utils import get_act_func
 from graphs.models.custom_layers.sinc_conv import SincConv_fast
 
 
-class SincNet(nn.Module):
+class Sincnet(nn.Module):
     
     def __init__(self,options):
-       super(SincNet,self).__init__()
+       super(Sincnet,self).__init__()
     
        self.cnn_N_filt=options.cnn_N_filt
        self.cnn_len_filt=options.cnn_len_filt
