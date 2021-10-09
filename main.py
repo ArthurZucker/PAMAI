@@ -8,6 +8,7 @@ Auteur: Arthur Zucker
 """
 from __future__ import absolute_import
 from __future__ import division
+from numpy.core.fromnumeric import std
 # use wandb instead of runx and logx
 import wandb
 
@@ -36,6 +37,7 @@ def main():
     # initialize wandb instance 
     run = wandb.init(config=vars(args.hparams), project="DENET-sweep run (testing code)")
     config = wandb.config
+    print("INITIALIZED WANDB")
     # Create the Agent and pass all the configuration to it then run it..
     agent_class = globals()[config.agent]
     agent = agent_class(config,run)

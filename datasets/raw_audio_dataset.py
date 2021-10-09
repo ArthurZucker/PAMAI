@@ -1,18 +1,18 @@
 import torch
 import torchaudio
 
-import os
+import glob
 from torch.utils.data import Dataset
 
 from pandas import read_csv
 
 class raw_audio_dataset(Dataset):
     
-    def __init__(self,img_dir, annotation_file, transform=None, target_transform=None):
+    def __init__(self,wav_dir, annotation_file, transform=None, target_transform=None):
         """
         Initialises the audio dataset
         """
-        self.audio_files        = [f for f in os.scandir(img_dir) if ".WAV" in f]
+        self.audio_files        = glob.glob(wav_dir+"/**/*.WAV",recursive=True)
         self.label              = read_csv(annotation_file)
         self.transform          = transform
         self.target_transform   = target_transform

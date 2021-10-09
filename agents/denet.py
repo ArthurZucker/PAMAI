@@ -42,7 +42,7 @@ class DenetAgent(BaseAgent):
 
         # define optimizers for both generator and discriminator
         self.optimizer = torch.optim.SGD(self.model.parameters(),
-                                         lr=self.config.learning_rate,
+                                         lr=self.config.lr,
                                          momentum=float(self.config.momentum),
                                          weight_decay=self.config.weight_decay,
                                          nesterov=True)
@@ -55,7 +55,7 @@ class DenetAgent(BaseAgent):
         # set cuda flag
         self.is_cuda = torch.cuda.is_available()
         if self.is_cuda and not self.config.cuda:
-           self.logger.info("WARNING: You have a CUDA device, so you should probably enable CUDA")
+           print("WARNING: You have a CUDA device, so you should probably enable CUDA")
 
         self.cuda = self.is_cuda & self.config.cuda
         
@@ -66,10 +66,10 @@ class DenetAgent(BaseAgent):
             torch.cuda.set_device(self.config.gpu_device)
             self.model = self.model.cuda()
             self.loss = self.loss.cuda()
-            self.logger.info("Program will run on *****GPU-CUDA***** ")
+            print("Program will run on *****GPU-CUDA***** ")
             print_cuda_statistics()
         else:
-            self.logger.info("Program will run on *****CPU*****\n")
+            print("Program will run on *****CPU*****\n")
 
         # Model Loading from the latest checkpoint if not found start from scratch.
         self.load_checkpoint(self.config.checkpoint_file)
@@ -84,7 +84,7 @@ class DenetAgent(BaseAgent):
         """
         filename = self.config.checkpoint_dir + filename
         try:
-            self.logger.info("Loading checkpoint '{}'".format(filename))
+            print("Loading checkpoint '{}'".format(filename))
             checkpoint = torch.load(filename)
 
             self.current_epoch = checkpoint['epoch']
@@ -92,11 +92,11 @@ class DenetAgent(BaseAgent):
             self.model.load_state_dict(checkpoint['state_dict'])
             self.optimizer.load_state_dict(checkpoint['optimizer'])
 
-            self.logger.info("Checkpoint loaded successfully from '{}' at (epoch {}) at (iteration {})\n"
+            print("Checkpoint loaded successfully from '{}' at (epoch {}) at (iteration {})\n"
                              .format(self.config.checkpoint_dir, checkpoint['epoch'], checkpoint['iteration']))
         except OSError as e:
-            self.logger.info("No checkpoint exists from '{}'. Skipping...".format(self.config.checkpoint_dir))
-            self.logger.info("**First time to train**")
+            print("No checkpoint exists from '{}'. Skipping...".format(self.config.checkpoint_dir))
+            print("**First time to train**")
 
     def save_checkpoint(self, filename="checkpoint.pth.tar", is_best=0):
         """
@@ -132,7 +132,7 @@ class DenetAgent(BaseAgent):
                 self.train()
 
         except KeyboardInterrupt:
-            self.logger.info("You have entered CTRL+C.. Wait to finalize")
+            print("You have entered CTRL+C.. Wait to finalize")
 
     def train(self):
         """
@@ -203,7 +203,7 @@ class DenetAgent(BaseAgent):
             self.wandb.log({"epoch/accuracy", top1_acc.val})
         tqdm_batch.close()
 
-        self.logger.info("Training at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
+        print("Training at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.val) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))
 
 
@@ -240,7 +240,7 @@ class DenetAgent(BaseAgent):
             top1_acc.update(top1[0].item(), x.size(0))
 
 
-        self.logger.info("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
+        print("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.avg) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))
 
         tqdm_batch.close()
@@ -252,7 +252,7 @@ class DenetAgent(BaseAgent):
         Finalize all the operations of the 2 Main classes of the process the operator and the data loader
         :return:
         """
-        self.logger.info("Please wait while finalizing the operation.. Thank you")
+        print("Please wait while finalizing the operation.. Thank you")
         self.save_checkpoint()
         self.summary_writer.export_scalars_to_json("{}all_scalars.json".format(self.config.summary_dir))
         self.summary_writer.close()

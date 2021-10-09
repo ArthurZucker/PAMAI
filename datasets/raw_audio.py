@@ -29,10 +29,10 @@ class raw_audio_Dataloader():
         self.len_train_data = len(train_dataset)
         self.len_valid_data = len(valid_dataset)
 
-        self.train_iterations = (self.len_train_data + self.args.batch_size - 1) // self.config.batch_size
-        self.valid_iterations = (self.len_valid_data + self.args.batch_size - 1) // self.config.batch_size
+        self.train_iterations = (self.len_train_data + self.config.batch_size - 1) // self.config.batch_size
+        self.valid_iterations = (self.len_valid_data + self.config.batch_size - 1) // self.config.batch_size
 
 
-        self.train_loader = DataLoader(train_dataset, batch_size=self.args.batch_size, shuffle=True)
-        self.valid_loader = DataLoader(valid_dataset, batch_size=self.args.batch_size, shuffle=False) 
+        self.train_loader = DataLoader(train_dataset, batch_size=self.config.batch_size, shuffle=True)
+        self.valid_loader = DataLoader(valid_dataset, batch_size=self.config.batch_size, shuffle=False) 
         
