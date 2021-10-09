@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 from simple_parsing import ArgumentParser
 
-# create a parser, as usual
-parser = ArgumentParser()
-
-
 @dataclass
-class MyModelHyperParameters:
+class hparams:
     """Hyperparameters of MyModel"""
 
     # Learning rate of the Adam optimizer.
@@ -15,6 +11,8 @@ class MyModelHyperParameters:
     momentum: float = 0.01
     # Architecture to choose, available are "denet (to come)", "sincnet (to come)", "leaf (to come)", "yolor (to come)"
     arch: str = "denet"
+    #Agent to use, the agent has his own trining loop
+    agent: str = "DenetAgent"
     # Dataset used for training
     dataset: str = "egyptian"
     # Number of workers used for the dataloader
@@ -29,3 +27,7 @@ class MyModelHyperParameters:
     test_mode: bool = True
     # Rank in the cluster
     global_rank: int = 0
+    # Number of epochs
+    epochs: int = 10
+    # use adam 
+    adam: bool = True

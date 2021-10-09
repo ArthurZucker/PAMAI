@@ -28,15 +28,10 @@ cudnn.benchmark = True
 class DenetAgent(BaseAgent):
 
     def __init__(self, config,wandb):
-        super().__init__(config)
-
+        super().__init__(config,wandb)
         # define models
-    
-        # to use efficientNet 3d:
-        # model = EfficientNet3D.from_name("efficientnet-b0", override_params={'num_classes': 1}, in_channels=1)
-        # use a better pre-trained model based on adversarial training
-        # model = EfficientNet.from_pretrained("efficientnet-b0", advprop=True)
         self.model = Denet(self.config)
+        # Init experiment watcher
         self.wandb = wandb
         self.wandb.watch(self.model)
         # define data_loader
