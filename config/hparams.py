@@ -15,6 +15,10 @@ class hparams:
     agent: str = "DenetAgent"
     # Dataset used for training
     dataset: str = "egyptian"
+    # path to images in dataset
+    img_dir: str = "data/audio"
+    # annotation path 
+    annotation_file: str = "data/audio/labels.csv"
     # Number of workers used for the dataloader
     num_workers: int = 8
     # Sampling rate of the raw audio
@@ -29,5 +33,5 @@ class hparams:
     global_rank: int = 0
     # Number of epochs
     epochs: int = 10
-    # use adam 
-    adam: bool = True
+    # optimizer 
+    optimizer: str = "RMSprop"

@@ -16,10 +16,9 @@ class raw_audio_Dataloader():
         
         # self.logger     = logging.getLogger("Cifar10DataLoader") # should i use this to debug?
         self.transform = None
-        
-        
-        logx.msg(f"BraTS_mean_Dataloader, data_mode : {args.data_mode}, path : {self.config.img_dir}")
-        dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,transform,self.config.build,split="train")
+                
+        print(f"BraTS_mean_Dataloader, data_mode : {args.dataset}, path : {self.config.img_dir}")
+        dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,self.transform,split="train")
 
         train_indices, valid_indices = train_test_split(range(len(dataset)),test_size=self.config.valid_size,train_size=1-self.config.valid_size,
                                                         shuffle=False)
