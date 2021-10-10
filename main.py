@@ -20,19 +20,21 @@ from simple_parsing import ArgumentParser
 
 # import hyperparameters
 from config.hparams import hparams
-from config.hparams import sincnet
+# from config.hparams import sincnet
 from utils.train_utils import get_net
 # from apex import amp
 # create a parser, as usual
 parser = ArgumentParser()
 # automatically add arguments for all the fields of the classes in hparams:
 parser.add_arguments(hparams, dest="hparams")
-parser.add_arguments(sincnet, dest="sincnet_param")
+# parser.add_arguments(sincnet, dest="sincnet_param")
 # parse arguments
 args = parser.parse_args()
 # Test Mode run two epochs with a few iterations of training and val
 if args.hparams.test_mode:
     args.hparams.max_epoch = 2
+
+
 
 def main():
     # initialize wandb instance 

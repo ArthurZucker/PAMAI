@@ -29,6 +29,11 @@ class DenetAgent(BaseAgent):
 
     def __init__(self, config,wandb):
         super().__init__(config,wandb)
+
+        # Converting context and shift in samples ??? input_dim = window-lengt, window shift is the shift 
+        config.input_dim2=int(config.fs*config.cw_len/1000.00)
+        config.wshift=int(config.fs*config.cw_shift/1000.00)
+
         # define models
         self.model = get_net(config)
         print(self.model)

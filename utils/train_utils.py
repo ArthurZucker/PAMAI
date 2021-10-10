@@ -32,7 +32,7 @@ def get_loss(args):
     return: criterion, criterion_val
     """
 
-    if args.loss == "NNL":
+    if args == "NNL":
        return nn.NLLLoss()
     else:
        print("Not implemented yet")
@@ -87,26 +87,26 @@ def get_optimizer(args, net):
     else:
         raise ValueError('Not a valid optimizer')
 
-    def poly_schd(epoch):
-        return math.pow(1 - epoch / args.max_epoch, args.poly_exp)
+   #  def poly_schd(epoch):
+   #      return math.pow(1 - epoch / args.max_epoch, args.poly_exp)
 
-    def poly2_schd(epoch):
-        if epoch < args.poly_step:
-            poly_exp = args.poly_exp
-        else:
-            poly_exp = 2 * args.poly_exp
-        return math.pow(1 - epoch / args.max_epoch, poly_exp)
+   #  def poly2_schd(epoch):
+   #      if epoch < args.poly_step:
+   #          poly_exp = args.poly_exp
+   #      else:
+   #          poly_exp = 2 * args.poly_exp
+   #      return math.pow(1 - epoch / args.max_epoch, poly_exp)
     
-    if args.lr_schedule == 'poly2':
-        scheduler = optim.lr_scheduler.LambdaLR(optimizer,
-                                                lr_lambda=poly2_schd)
-    elif args.lr_schedule == 'poly':
-        scheduler = optim.lr_scheduler.LambdaLR(optimizer,
-                                                lr_lambda=poly_schd)
-    else:
-        raise ValueError('unknown lr schedule {}'.format(args.lr_schedule))
+   #  if args.lr_schedule == 'poly2':
+   #      scheduler = optim.lr_scheduler.LambdaLR(optimizer,
+   #                                              lr_lambda=poly2_schd)
+   #  elif args.lr_schedule == 'poly':
+   #      scheduler = optim.lr_scheduler.LambdaLR(optimizer,
+   #                                              lr_lambda=poly_schd)
+   #  else:
+   #      raise ValueError('unknown lr schedule {}'.format(args.lr_schedule))
 
-    return optimizer, scheduler
+    return optimizer #, scheduler
 
 
 """
