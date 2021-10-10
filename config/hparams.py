@@ -35,8 +35,6 @@ class hparams:
     dropout: float = 0.3
     # Use of deterministic training, setting constant random seed
     deterministic: bool = True
-    # Toggle testing mode, which only runs a few epochs and val
-    test_mode: bool = True
     # Rank in the cluster
     global_rank: int = 0
     # Number of epochs
@@ -53,6 +51,16 @@ class hparams:
     reg_factor: int = 10000
     fact_amp: float =0.2
     seed: int = 1234
+    # checkpoint dir
+    checkpoint_dir: str = "weights"
+    # checkpoint file 
+    checkpoint_file: str = ""
+    # mode
+    mode: str = "train"
+    # Toggle testing mode, which only runs a few epochs and val
+    test_mode: bool = True
+    # max epoch tu run 
+    max_epoch: int = 100
 
 
 # @dataclass

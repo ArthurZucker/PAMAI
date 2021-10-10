@@ -13,7 +13,7 @@ class raw_audio_dataset(Dataset):
         Initialises the audio dataset
         """
         self.audio_files        = glob.glob(wav_dir+"/**/*.WAV",recursive=True)
-        self.label              = read_csv(annotation_file)
+        self.label              = read_csv(annotation_file,sep="\t")
         self.transform          = transform
         self.target_transform   = target_transform
     

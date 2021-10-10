@@ -75,8 +75,8 @@ class DenetAgent(BaseAgent):
 
         # Model Loading from the latest checkpoint if not found start from scratch.
         self.load_checkpoint(self.config.checkpoint_file)
-        # Summary Writer
-        self.summary_writer = SummaryWriter(log_dir=self.config.summary_dir, comment='FirstTest')
+        # Summary Writer, useless since I use wandb
+        # self.summary_writer = SummaryWriter(log_dir=self.config.summary_dir, comment='FirstTest')
 
     def load_checkpoint(self, filename):
         """
@@ -145,9 +145,9 @@ class DenetAgent(BaseAgent):
             self.current_epoch = epoch
             self.train_one_epoch()
 
-            if epoch%self.config.validate_every==0 or self.config.testing:
+            if epoch%self.config.validate_every==0 or self.config.test_mode:
                 valid_acc = self.validate()
-                if self.config.testing:exit(1)
+                if self.config.test_mode:exit(1)
                 is_best = valid_acc > self.best_valid_acc
                 if is_best:
                     self.best_valid_acc = valid_acc
@@ -161,7 +161,7 @@ class DenetAgent(BaseAgent):
         uses tqdm to load data in parallel? Nope thats not true
         :return:
         """
-        if self.config.testing: 
+        if self.config.test_mode: 
             self.data_loader.train_iterations = 10
         tqdm_batch = tqdm(self.data_loader.train_loader, total=self.data_loader.train_iterations,
                           desc="Epoch-{}-".format(self.current_epoch))
@@ -256,6 +256,6 @@ class DenetAgent(BaseAgent):
         """
         print("Please wait while finalizing the operation.. Thank you")
         self.save_checkpoint()
-        self.summary_writer.export_scalars_to_json("{}all_scalars.json".format(self.config.summary_dir))
-        self.summary_writer.close()
-        self.data_loader.finalize()
+        # self.summary_writer.export_scalars_to_json("{}all_scalars.json".format(self.config.summary_dir))
+        # self.summary_writer.close()
+        # self.data_loader.finalize()

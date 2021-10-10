@@ -30,9 +30,7 @@ parser.add_arguments(hparams, dest="hparams")
 # parser.add_arguments(sincnet, dest="sincnet_param")
 # parse arguments
 args = parser.parse_args()
-# Test Mode run two epochs with a few iterations of training and val
-if args.hparams.test_mode:
-    args.hparams.max_epoch = 2
+
 
 
 
