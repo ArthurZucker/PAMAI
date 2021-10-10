@@ -69,10 +69,13 @@ class hparams:
 
     # activation function
     activation: str = "relu"
-    # windowing
+    # frequency sample
     fs: int = 8000
-    cw_len: int = 375
+    # length of the input in ms
+    cw_len: int = 200
+    # overlap in ms between the samples taken from the input
     cw_shift: int = 10
+    # input dimension in terms of samples, actual input size of the NN 
     input_dim: int = int(fs*cw_len/1000.00)
     # Regex to process lists
     #  =([^ ].*?),(.*)\)

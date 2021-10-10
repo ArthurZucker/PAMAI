@@ -29,3 +29,10 @@ Moreover, I am using my template implementation which allows to easly switch bet
 - [ ] Create Docker 
 - [ ] Details on the readme 
 - [ ] Add to my website 
+
+## Issue : 
+output of sincnet and denet is the label at each window of 50ms. Thus the labels that I use should also be of the same format. Which means that when I select an audio file to use, randomly select a part of it? then extract the label from the sample. 
+Sample available labels : {500->550},{...},{...} a list of ranges of samples where we know that a flying foxe shouted! 
+
+DENET's input : 1 sequence of 10 frames of 50ms audio. Labels? Probably a sequence of labels.  
+SincNet's input : 1 chunk of 200ms, 10ms overlap, 128 batch size. Labels are for each wav file, a single label, which is a bit strange. 
