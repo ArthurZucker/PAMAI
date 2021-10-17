@@ -70,4 +70,4 @@ Add FF call to background sounds and use it as training. Hashizume's FF already 
 
 ### Improving the dataset  
 
-Our dataset only has positive instances -- bat calls are almost always present in recordings -- thus we need to augment it with more recordings, were other events happen. We have a huge enough dataset, which means that we can subsample it, and combine it with random noises from famous benchmark dataset? The audio conditions will be different :unhappy: 
+Our dataset only has positive instances -- bat calls are almost always present in recordings -- thus we need to augment it with more recordings, were other events happen. We have a huge enough dataset, which means that we can subsample it, and combine it with random noises from famous benchmark dataset? The audio conditions will be different :confused:
