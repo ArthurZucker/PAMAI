@@ -31,9 +31,9 @@ def sinc(band,t_right):
     
 def get_rnd_audio(filename: str, window_size):
     audio,sr = torchaudio.load(filename)
-    print(audio.size())
     begin_sample = random.randint(0,audio.size()[1]-window_size)
     end_sample = begin_sample + window_size
+    print(f'begin and start samples randomly selected : {begin_sample},{end_sample}')
     audio = audio[begin_sample:end_sample]
     return audio,begin_sample,end_sample
 
