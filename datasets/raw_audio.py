@@ -18,7 +18,7 @@ class raw_audio_Dataloader():
         self.transform = None
                 
         print(f"BraTS_mean_Dataloader, data_mode : {args.dataset}, path : {self.config.img_dir}")
-        dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,self.transform)
+        dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,self.config.input_dim,self.transform)
 
         train_indices, valid_indices = train_test_split(range(len(dataset)),test_size=self.config.valid_size,train_size=1-self.config.valid_size,
                                                         shuffle=False)

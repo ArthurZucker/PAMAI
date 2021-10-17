@@ -1,6 +1,7 @@
 """
     Most functions are from the github repo of sincNet, simply put in other files for clarity
 """
+import torchaudio
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -8,6 +9,7 @@ import torch.nn as nn
 import sys
 from torch.autograd import Variable
 import math
+import random
 
 def flip(x, dim):
     xsize = x.size()
@@ -27,3 +29,19 @@ def sinc(band,t_right):
 
     return y
     
+def get_rnd_audio(filename: str, window_size):
+    audio,sr = torchaudio.load(filename)
+    print(audio.size())
+    begin_sample = random.randint(0,audio.size()[1]-window_size)
+    end_sample = begin_sample + window_size
+    audio = audio[begin_sample:end_sample]
+    return audio,begin_sample,end_sample
+
+def extract_label(labels,begining,end):
+    for k in labels[2:]:
+        if not np.isnan(k):
+            print(f'value of k : {k}')
+            if k < end and k>begining:
+                return 1 
+
+    return 0
