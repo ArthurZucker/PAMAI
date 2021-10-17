@@ -1,0 +1,15 @@
+program: main.py
+method: random
+metric:
+  goal: minimize
+  name: loss
+parameters:
+  lr:
+    values: [0.001, 0.005, 0.0005]
+  epochs:
+    value: 27
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 27

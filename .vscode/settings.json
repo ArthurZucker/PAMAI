@@ -6,4 +6,7 @@
         "--line-length",
         "120",
     ],
+    "cSpell.words": [
+        "hparams"
+    ],
 }
