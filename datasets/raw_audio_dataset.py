@@ -16,8 +16,8 @@ class raw_audio_dataset(Dataset):
         self.label              = read_csv(annotation_file,sep="\t")
         self.transform          = transform
         self.target_transform   = target_transform
-        self.input_size         =input_size
-        
+        self.input_size         = input_size
+
     def __len__(self):
         """
         Returns the length of the dataset
