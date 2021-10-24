@@ -47,12 +47,12 @@ def show_info(data : pd.DataFrame):
     nb_known_context_calls = len(data.query('Context > 0 & Context != 11 '))
 
     unknown_sex = [108,113,120,210,214,220,220,230]
-    nb_known_call_genders = len(data.query('Emitter not in @unknown_sex'))
+    nb_known_call_genders = len(data.query('Emitter not in @unknown_sex & Emitter > 0'))
 
     print(f"Known emitter calls : {nb_known_emitter_calls}")
     print(f"Known context calls : {nb_known_context_calls}")
     print(f"Known calls from which the gender of the emitter is known: {nb_known_call_genders}")
-    
+
 if __name__ == '__main__':
     path = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats"
     data = sub_sample_dataset(path+"/Annotations.csv",path + "/FileInfo.csv")

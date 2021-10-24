@@ -89,8 +89,9 @@ Our dataset only has positive instances -- bat calls are almost always present i
 - 293 235 total number of different audio files. Each containing at least 1 call. 
 - 91 081 total number of labeled audio. Labels are : `Emitter, Addressee, Context, Emitter pre-vocalization action,	Addressee pre-vocalization action,	Emitter post-vocalization action,	Addressee post-vocalization action`
 - In the case of emitter, 7858 and 44075 calls have no labels. ("-" sign in label means that the bat is either emitter or addressee)
-- TODO Count the number of calls with a known emitter
-- TODO, COunt the number of calls with a begin and end sample? 
+- 39147 is the number of audio files for which the emitter is known.  
+- 60813 is the number of audio files for which the context of the call is known.  (General and Unknown labels excluded)
+- 31922 is the number of audio files for which the gender of the emitter is known. (puppies without a known gender excluded)
 
 | 0 | Unknown | Unknown context | 640 |
 |---|---|---|---|
