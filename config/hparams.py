@@ -26,7 +26,7 @@ class hparams:
     # path to images in dataset
     img_dir: str = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats"
     # annotation path 
-    annotation_file: str = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats/processed_labeled.csv"
+    annotation_file: str = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/subsampled_datset.csv"
     # Number of workers used for the dataloader
     num_workers: int = 8
     # Sampling rate of the raw audio
@@ -61,7 +61,8 @@ class hparams:
     test_mode: bool = True
     # max epoch tu run 
     max_epoch: int = 100
-
+    # async_loading
+    async_loading: bool = True
 
 # @dataclass
 # class sincnet:

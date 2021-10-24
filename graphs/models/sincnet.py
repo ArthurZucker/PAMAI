@@ -94,7 +94,8 @@ class Sincnet(nn.Module):
        if bool(self.cnn_use_batchnorm_inp):
         x=self.bn0((x))
         
-       x=x.view(batch,1,seq_len)
+       # removed the next line given the correct input of my dataloader
+       # x=x.view(batch,1,seq_len)
 
        
        for i in range(self.N_cnn_lay):

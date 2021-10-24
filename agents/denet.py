@@ -176,7 +176,7 @@ class DenetAgent(BaseAgent):
         for x, y in tqdm_batch:
             if self.cuda:
                 x, y = x.cuda(non_blocking=self.config.async_loading), y.cuda(non_blocking=self.config.async_loading)
-            x, y = Variable(x), Variable(y).unsqueeze(1).type(torch.float) # I don't even know why
+            x, y = Variable(x), Variable(y).type(torch.long) # I don't even know why
             lr = adjust_learning_rate(self.optimizer, self.current_epoch, self.config, batch=current_batch,
                                       nBatch=self.data_loader.train_iterations)
             
@@ -201,8 +201,8 @@ class DenetAgent(BaseAgent):
             self.current_iteration += 1
             current_batch += 1
 
-            self.wandb.log({"epoch/loss", epoch_loss.val})
-            self.wandb.log({"epoch/accuracy", top1_acc.val})
+            self.wandb.log({"epoch/loss": epoch_loss.val})
+            self.wandb.log({"epoch/accuracy": top1_acc.val})
         tqdm_batch.close()
 
         print("Training at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(

@@ -26,21 +26,16 @@ def sub_sample_dataset(filename1 : str,filename2:str,res_path:str = "/home/arthu
 
     result = pd.merge(data1, data2,how="left",on="FileID") # here the merge is "left" which subsamples 1/3 of the dataset. 
     # remove useless headers. 
-    result.drop(["FileID","Treatment ID","File folder","Recording channel",\
+    result["File name"]= result["File folder"].str.cat(result["File name"], sep ="/")
+    result.drop(["FileID","File folder","Treatment ID","Recording channel",\
                                                     "Recording time","Addressee","Emitter pre-vocalization action", \
                                                     "Addressee pre-vocalization action", "Emitter post-vocalization action",\
                                                     "Addressee post-vocalization action"],axis=1,inplace=True)
+    col = result.pop("File name")
+    result.insert(0, col.name, col)
     result.to_csv(res_path)
     return result
 
-def extract_label(labels,begining,end):
-    for k in labels[2:]:
-        if not np.isnan(k):
-            print(f'value of k : {k}')
-            if k < end and k>begining:
-                return 1 
-
-    return 0
 
 def show_info(data : pd.DataFrame):
     nb_known_emitter_calls = len(data.query('Emitter > 0'))

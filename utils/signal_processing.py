@@ -31,9 +31,18 @@ def sinc(band,t_right):
     
 def get_rnd_audio(filename: str, window_size):
     audio,sr = torchaudio.load(filename)
-    begin_sample = random.randint(0,audio.size()[1]-window_size)
+
+    begin_sample = random.randint(0,(audio.shape[1]-window_size))
     end_sample = begin_sample + window_size
-    print(f'begin and start samples randomly selected : {begin_sample},{end_sample}')
-    audio = audio[begin_sample:end_sample]
+    # print(f'begin and start samples randomly selected : {begin_sample},{end_sample}')
+    audio = audio[:,begin_sample:end_sample]
     return audio,begin_sample,end_sample
 
+
+def extract_label_bat(labels,begining,end):
+    # for each 50ms frames, give a single label. 
+    bat_call_begin = max(int(labels[4]),np.min(np.array(labels[5:],dtype=np.float32)))
+    bat_call_end = np.min(labels[5::2])
+    
+    if begining>bat_call_begin and end < bat_call_end + (end-begining)/2: return 1 # 1 is "bat call", 0 is other
+    else: return 0
