@@ -48,9 +48,9 @@ def show_info(data : pd.DataFrame):
     print(f"Known context calls : {nb_known_context_calls}")
     print(f"Known calls from which the gender of the emitter is known: {nb_known_call_genders}")
 
+from utils.signal_processing import extract_label_bat
 
-
-def create_reference_lists_from_path(sample,label,ws):
+def create_reference_lists_from_path(sample,label,ws,fs):
     """ Creates an annotation file for visualizing in sed_vis
     Args:
         samples : name of the audio files being processed
@@ -59,14 +59,25 @@ def create_reference_lists_from_path(sample,label,ws):
     Return :
         Nothing
     """
-    for i,wav in enumerate(sample): 
-        audio,sr = torchaudio.load(wav)
-        lab = []
-        for b in range(0,audio.shape[1],ws): 
-            lab.append(extract_label_bat(label.iloc[i],b,b+ws))
+    res = []
+    start = 0
+    audio,sr = torchaudio.load(sample)
+    for b in range(0,audio.shape[1],ws): 
+        i = b//ws
+        data = extract_label_bat(label,b,b+ws)
+        if data == 1 and start == 0: start = i*(ws)/fs
+        elif data == 0 and start!= 0 : 
+            res.append([start,i*(ws)/fs])
+            start = 0
+    content = ""
+    for r1,r2 in res:
+        content += f"{r1} {r2} batcall\n"
+    with open(f"/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/{sample.split('/')[-1][:-4]}.ann","w") as f:
+        f.write(content)
+
     return 
 
-def create_estimated_lists_from_output(sample,output):
+def create_estimated_lists_from_output(audio,label,ws,fs):
     """ Creates an annotation file for visualizing in sed_vis
     Args:
         sample: name of the audio file being processed
@@ -74,7 +85,20 @@ def create_estimated_lists_from_output(sample,output):
     Return :
         Nothing
     """
-    return
+    res = []
+    start = 0
+    for b in range(0,audio.shape[1],ws): 
+        i = b//ws
+        data = extract_label_bat(label,b,b+ws)
+        if data == 1 and start == 0: start = i*(ws)/fs
+        elif data == 0 and start!= 0 : 
+            res.append([start,i*(ws)/fs])
+            start = 0
+    content = ""
+    for r1,r2 in res:
+        content += f"{r1} {r2} batcall\n"
+    with open(f"/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/{sample.split('/')[-1][:-4]}_pred.ann","w") as f:
+        f.write(content)
 
 if __name__ == '__main__':
     path = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats"

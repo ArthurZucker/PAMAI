@@ -34,7 +34,7 @@ class hparams:
     # Number of workers used for the dataloader
     num_workers: int = 8
     # Sampling rate of the raw audio
-    sr: int = 24000  # in HZ
+    sr: int = 25000  # in HZ
     # Probability of dropout
     dropout: float = 0.3
     # Use of deterministic training, setting constant random seed
@@ -77,7 +77,7 @@ class hparams:
     # frequency sample
     fs: int = 8000
     # length of the input in ms
-    cw_len: int = 200
+    cw_len: int = 500
     # overlap in ms between the samples taken from the input
     cw_shift: int = 10
     # input dimension in terms of samples, actual input size of the NN here, 1600
@@ -98,22 +98,14 @@ class hparams:
     cnn_drop: List[float] = list_field(0.0, 0.0, 0.0)
 
     # dnn
-    fc_lay: List[int] = list_field(2048,2048,2048)
-    fc_drop: List[float] = list_field(0.0,0.0)
+    fc_lay: List[int] = list_field(2048,2048,2048,1024,256,2)
+    fc_drop: List[float] = list_field(0.0,0.0,0.0,0.0,0.0,0.1)
     fc_use_laynorm_inp: bool = True
     fc_use_batchnorm_inp: bool = False
-    fc_use_batchnorm: List[bool] = list_field(True,True,True)
-    fc_use_laynorm: List[bool] = list_field(False,False,False)
-    fc_act: List[str] = list_field("leaky_relu","linear","leaky_relu")
+    fc_use_batchnorm: List[bool] = list_field(True,True,True,True,True,True)
+    fc_use_laynorm: List[bool] = list_field(False,False,False,False,False,False)
+    fc_act: List[str] = list_field("leaky_relu","linear","leaky_relu","leaky_relu","leaky_relu","softmax")
 
-    # class
-    class_lay: int =  2484
-    class_drop: List[float] = list_field(0.0,0.0)
-    class_use_laynorm_inp:  bool = True
-    class_use_batchnorm_inp: bool = False
-    class_use_batchnorm: bool = False
-    class_use_laynorm: bool = False
-    class_act: str = "softmax"
 
 
     

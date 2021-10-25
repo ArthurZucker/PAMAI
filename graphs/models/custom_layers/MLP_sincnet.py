@@ -5,10 +5,10 @@ from utils.train_utils import get_act_func
 from graphs.models.custom_layers.layer_norm import LayerNorm
 
 class MLP(nn.Module):
-    def __init__(self, options):
+    def __init__(self, options,fc_input_dim):
         super(MLP, self).__init__()
         
-        self.input_dim=int(options.input_dim)
+        self.input_dim=int(fc_input_dim)
         self.fc_lay=options.fc_lay
         self.fc_drop=options.fc_drop
         self.fc_use_batchnorm=options.fc_use_batchnorm

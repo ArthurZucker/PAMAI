@@ -152,6 +152,7 @@ class DenetAgent(BaseAgent):
         Main training loop
         :return:
         """
+        max_epoch = self.config.max_epoch
         if self.config.test_mode: 
             max_epoch = 2
 
@@ -240,14 +241,15 @@ class DenetAgent(BaseAgent):
             sample = path.join(self.config.img_dir,p)
             audio_container = dcase_util.containers.AudioContainer().load(sample)
             audio,sr = torchaudio.load(sample)
-            end = (audio.shape[1]-(audio.shape[1]%1600))
+            end = (audio.shape[1]-(audio.shape[1]%self.config.input_dim))
             audio = audio[0][:end]
-            batches = Variable(audio.view(-1,1,1600))
+            batches = Variable(audio.view(-1,1,self.config.input_dim))
             pred = self.model(batches.cuda())
+            label = np.array(labels.loc[labels['File name'] == p])[0]
+            create_reference_lists_from_path(sample,label,self.config.input_dim,self.config.fs)
             
-            create_reference_lists_from_path(sample,labels)
-            
-            create_estimated_lists_from_output(sample,pred)
+            create_estimated_lists_from_output(pred,pred,self.config.input_dim,self.config.fs)
+
             reference_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001.ann')
             estimated_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001_system_output.ann')
 
@@ -272,6 +274,8 @@ class DenetAgent(BaseAgent):
         One cycle of model validation
         :return:
         """
+        if self.config.test_mode:
+            self.data_loader.valid_iterations = 5
         tqdm_batch = tqdm(self.data_loader.valid_loader, total=self.data_loader.valid_iterations,
                           desc="Valiation at -{}-".format(self.current_epoch))
 
@@ -281,7 +285,7 @@ class DenetAgent(BaseAgent):
         epoch_loss = AverageMeter()
         top1_acc = AverageMeter()
         top5_acc = AverageMeter()
-
+        current_batch = 0 
         for x, y in tqdm_batch:
             if self.cuda:
                 x, y = x.cuda(non_blocking=self.config.async_loading), y.cuda(non_blocking=self.config.async_loading)
@@ -303,7 +307,8 @@ class DenetAgent(BaseAgent):
             self.wandb.log({"epoch/validation_loss": epoch_loss.val,
                             "epoch/validation_accuracy": top1_acc.val
                             })
-            if self.config.test_mode: 
+            current_batch += 1
+            if self.config.test_mode and current_batch == 5: 
                     break
 
         print("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(

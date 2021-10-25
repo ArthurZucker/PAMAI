@@ -41,8 +41,9 @@ def get_rnd_audio(filename: str, window_size):
 
 def extract_label_bat(labels,begining,end):
     # for each 50ms frames, give a single label. 
-    bat_call_begin = max(int(labels[4]),np.min(np.array(labels[5:],dtype=np.float32)))
-    bat_call_end = np.min(labels[5::2])
+    bat_call_begin = max(int(labels[4]),np.nanmin(np.array(labels[6::2],dtype=np.float32)))
+    bat_call_end = np.nanmin(labels[5::2])
     
-    if begining>bat_call_begin and end < bat_call_end + (end-begining)/2: return 1 # 1 is "bat call", 0 is other
-    else: return 0
+    if begining>bat_call_begin and end < bat_call_end + (end-begining)/2: val = 1 # 1 is "bat call", 0 is other
+    else: val = 0
+    return val

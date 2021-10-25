@@ -15,13 +15,14 @@ from graphs.models.custom_layers.layer_norm import LayerNorm
 from utils.train_utils import get_act_func
 from graphs.models.custom_layers.sinc_conv import SincConv_fast
 from graphs.models.custom_layers.MLP_sincnet import MLP
+from easydict import EasyDict as edict
+
 
 class Sincnet(nn.Module):
     
     def __init__(self,options):
        super(Sincnet,self).__init__()
     
-      #  self.MLP = MLP(options)
       # @TODO use MLP for a classification of the feature outputed by sincnet 
 
        self.cnn_N_filt=options.cnn_N_filt
@@ -84,6 +85,7 @@ class Sincnet(nn.Module):
 
          
        self.out_dim=current_input*N_filt
+       self.MLP = MLP(options, self.out_dim)
 
 
 
@@ -117,7 +119,7 @@ class Sincnet(nn.Module):
 
        
        x = x.view(batch,-1)
-
+       x = self.MLP(x)
        return x
    
    
