@@ -232,7 +232,7 @@ class DenetAgent(BaseAgent):
         plt_chart = []
         #----------------------------------------------------#
         #               Sound visualisation logger
-        vis_path = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/sed_vis/"
+        vis_path = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/"
         templates_path = self.data_loader.valid_loader.dataset.indices[0:1000:100] 
         annotations = pd.read_csv(self.config.annotation_file)
         paths  = annotations['File name'][templates_path]
@@ -246,12 +246,12 @@ class DenetAgent(BaseAgent):
             batches = Variable(audio.view(-1,1,self.config.input_dim))
             pred = self.model(batches.cuda())
             label = np.array(labels.loc[labels['File name'] == p])[0]
-            create_reference_lists_from_path(sample,label,self.config.input_dim,self.config.fs)
+            create_reference_lists_from_path(sample,label,self.config.input_dim,sr)
             
-            create_estimated_lists_from_output(pred,pred,self.config.input_dim,self.config.fs)
+            create_estimated_lists_from_output(sample,pred,label,self.config.input_dim,sr)
 
-            reference_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001.ann')
-            estimated_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001_system_output.ann')
+            reference_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + f'{p.split("/")[-1][:-4]}.ann')
+            estimated_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + f'{p.split("/")[-1][:-4]}_pred.ann')
 
             event_lists = {
                 'reference': reference_event_list, 
@@ -261,9 +261,11 @@ class DenetAgent(BaseAgent):
             # Visualize the data
             vis = sed_vis.visualization.EventListVisualizer(event_lists=event_lists,
                                                         audio_signal=audio_container.data,
-                                                        sampling_rate=audio_container.fs)
+                                                        sampling_rate=audio_container.fs,
+                                                        show_selector = False)
 
             # @TODO add to config file
+            plt.ioff()
             vis.generate_GUI()
             # vis.save(self.config.visualization_path)
             plt_chart.append(wandb.Image(plt))
@@ -303,14 +305,14 @@ class DenetAgent(BaseAgent):
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
-            self.visualize()
+            
             self.wandb.log({"epoch/validation_loss": epoch_loss.val,
                             "epoch/validation_accuracy": top1_acc.val
                             })
             current_batch += 1
             if self.config.test_mode and current_batch == 5: 
                     break
-
+        self.visualize()            
         print("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.avg) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))
 

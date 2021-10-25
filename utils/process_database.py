@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import torchaudio
+import torch
 
 def sub_sample_dataset(filename1 : str,filename2:str,res_path:str = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/subsampled_datset.csv"):
     """Extract emitter and context labeled data form the filename dataset  
@@ -65,9 +66,9 @@ def create_reference_lists_from_path(sample,label,ws,fs):
     for b in range(0,audio.shape[1],ws): 
         i = b//ws
         data = extract_label_bat(label,b,b+ws)
-        if data == 1 and start == 0: start = i*(ws)/fs
+        if data == 1 and start == 0: start = (i*ws)/fs
         elif data == 0 and start!= 0 : 
-            res.append([start,i*(ws)/fs])
+            res.append([start,(i*ws)/fs])
             start = 0
     content = ""
     for r1,r2 in res:
@@ -77,7 +78,7 @@ def create_reference_lists_from_path(sample,label,ws,fs):
 
     return 
 
-def create_estimated_lists_from_output(audio,label,ws,fs):
+def create_estimated_lists_from_output(path,audio,label,ws,fs):
     """ Creates an annotation file for visualizing in sed_vis
     Args:
         sample: name of the audio file being processed
@@ -87,17 +88,16 @@ def create_estimated_lists_from_output(audio,label,ws,fs):
     """
     res = []
     start = 0
-    for b in range(0,audio.shape[1],ws): 
-        i = b//ws
-        data = extract_label_bat(label,b,b+ws)
-        if data == 1 and start == 0: start = i*(ws)/fs
+    for i in range(0,audio.shape[0]): 
+        data = torch.argmax(audio[i])
+        if data == 1 and start == 0: start = (i*ws)/fs
         elif data == 0 and start!= 0 : 
-            res.append([start,i*(ws)/fs])
+            res.append([start,(i*ws)/fs])
             start = 0
     content = ""
     for r1,r2 in res:
         content += f"{r1} {r2} batcall\n"
-    with open(f"/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/{sample.split('/')[-1][:-4]}_pred.ann","w") as f:
+    with open(f"/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/{path.split('/')[-1][:-4]}_pred.ann","w") as f:
         f.write(content)
 
 if __name__ == '__main__':

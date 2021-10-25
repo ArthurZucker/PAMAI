@@ -1,4 +1,5 @@
 wandb/
+assets/
 *.csv
 *.tar
 # Byte-compiled / optimized / DLL files
