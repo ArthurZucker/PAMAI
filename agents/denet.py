@@ -22,6 +22,14 @@ from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy
 from utils.misc import print_cuda_statistics
 from utils.train_utils import adjust_learning_rate
 from utils.train_utils import get_net,get_loss,get_optimizer
+
+# visualisation tool
+import sed_vis
+import dcase_util
+import wandb
+import pandas as pd
+import matplotlib.pyplot as plt
+from os import path
 cudnn.benchmark = True
 
 
@@ -39,7 +47,7 @@ class DenetAgent(BaseAgent):
         print(self.model)
         # Init experiment watcher
         self.wandb = wandb
-        self.wandb.watch(self.model)
+        self.wandb.watch(self.model,log="all",log_freq=5)
         # define data_loader
         self.data_loader = raw_audio_Dataloader(self.config)
 
@@ -141,17 +149,20 @@ class DenetAgent(BaseAgent):
         Main training loop
         :return:
         """
-        for epoch in range(self.current_epoch, self.config.max_epoch):
+        if self.config.test_mode: 
+            max_epoch = 2
+
+        for epoch in range(self.current_epoch, min(max_epoch,self.config.max_epoch)):
             self.current_epoch = epoch
             self.train_one_epoch()
 
-            if epoch%self.config.validate_every==0 or self.config.test_mode:
+            if epoch%self.config.validate_every==0 :
                 valid_acc = self.validate()
-                if self.config.test_mode:exit(1)
                 is_best = valid_acc > self.best_valid_acc
                 if is_best:
                     self.best_valid_acc = valid_acc
                 self.save_checkpoint(is_best=is_best)
+                
         
 
 
@@ -163,8 +174,10 @@ class DenetAgent(BaseAgent):
         """
         if self.config.test_mode: 
             self.data_loader.train_iterations = 10
+
+
         tqdm_batch = tqdm(self.data_loader.train_loader, total=self.data_loader.train_iterations,
-                          desc="Epoch-{}-".format(self.current_epoch))
+                          desc="Epoch-{}-".format(self.current_epoch),leave=True)
         # Set the model to be in training mode
         self.model.train()
         # Initialize your average meters @TODO: ARTHUR I still don't know what that is
@@ -201,13 +214,43 @@ class DenetAgent(BaseAgent):
             self.current_iteration += 1
             current_batch += 1
 
-            self.wandb.log({"epoch/loss": epoch_loss.val})
-            self.wandb.log({"epoch/accuracy": top1_acc.val})
+            self.wandb.log({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val,"logits": wandb.Histogram(y.cpu())})
+            
+            if self.config.test_mode and current_batch == 11: 
+                break
+
         tqdm_batch.close()
 
         print("Training at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.val) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))
 
+    def visualize(self):
+        plt_chart = []
+        #----------------------------------------------------#
+        #               Sound visualisation logger
+        vis_path = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/sed_vis/"
+        templates_path = self.data_loader.valid_loader.dataset.indices[0:1000:100]
+        paths = pd.read_csv(self.config.annotation_file)['File name'][templates_path]
+        for p in paths:
+            audio_container = dcase_util.containers.AudioContainer().load(path.join(self.config.img_dir,p))
+            reference_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001.ann')
+            estimated_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001_system_output.ann')
+
+            event_lists = {
+                'reference': reference_event_list, 
+                'estimated': estimated_event_list
+            }
+
+            # Visualize the data
+            vis = sed_vis.visualization.EventListVisualizer(event_lists=event_lists,
+                                                        audio_signal=audio_container.data,
+                                                        sampling_rate=audio_container.fs)
+
+            # @TODO add to config file
+            vis.generate_GUI()
+            # vis.save(self.config.visualization_path)
+            plt_chart.append(wandb.Image(plt))
+        self.wandb.log({"chart": plt_chart})
 
     def validate(self):
         """
@@ -228,7 +271,7 @@ class DenetAgent(BaseAgent):
             if self.cuda:
                 x, y = x.cuda(non_blocking=self.config.async_loading), y.cuda(non_blocking=self.config.async_loading)
 
-            x, y = Variable(x), Variable(y).unsqueeze(1).type(torch.float)
+            x, y = Variable(x), Variable(y).type(torch.long)
             # model
             pred = self.model(x)
             # loss
@@ -239,8 +282,15 @@ class DenetAgent(BaseAgent):
             top1 = cls_accuracy(pred.data, y.data)
 
             epoch_loss.update(cur_loss.item())
-            top1_acc.update(top1[0].item(), x.size(0))
-
+            top1_acc.update(top1[0].item(), x.size(0))    
+            # update visualization        
+            self.visualize()
+            self.wandb.log({"sed_vis": wandb.Image(self.config.visualization_path),
+                            "epoch/validation_loss": epoch_loss.val,
+                            "epoch/validation_accuracy": top1_acc.val
+                            })
+            if self.config.test_mode: 
+                    break
 
         print("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.avg) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))

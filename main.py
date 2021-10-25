@@ -36,7 +36,7 @@ args = parser.parse_args()
 
 def main():
     # initialize wandb instance 
-    run = wandb.init(config=vars(args.hparams), project="DENET-sweep run (testing code)")
+    run = wandb.init(config=vars(args.hparams), project="DENET-sweep run (testing code)",allow_val_change=True)
     config = wandb.config
     print("INITIALIZED WANDB")
     print(get_net(args.hparams))

@@ -1,7 +1,6 @@
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Subset
 
-from runx.logx import logx
 
 
 from sklearn.model_selection import train_test_split
@@ -14,9 +13,12 @@ class raw_audio_Dataloader():
     def __init__(self,args):
         
         self.config = args
-        # self.logger     = logging.getLogger("Cifar10DataLoader") # should i use this to debug?
         self.transform = None
                 
+
+        if self.config.test_mode: 
+            self.train_iterations = 10
+
         print(f"BraTS_mean_Dataloader, data_mode : {args.dataset}, path : {self.config.img_dir}")
         dataset = raw_audio_dataset(self.config.img_dir,self.config.annotation_file,self.config.input_dim,self.transform)
 
@@ -35,4 +37,6 @@ class raw_audio_Dataloader():
 
         self.train_loader = DataLoader(train_dataset, batch_size=self.config.batch_size, shuffle=True)
         self.valid_loader = DataLoader(valid_dataset, batch_size=self.config.batch_size, shuffle=False) 
+
+        
         

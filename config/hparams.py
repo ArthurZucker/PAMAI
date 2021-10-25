@@ -5,8 +5,12 @@ from typing import List
 @dataclass
 class hparams:
     """Hyperparameters of MyModel"""
+    # self.config.visualization_path
+    visualization_path: str =  "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/sound_vis/example_call.png"
     # validatin size
     valid_size: float = 0.2
+    # validation frequency
+    validate_every: int = 1
     # Learning rate of the Adam optimizer.
     lr: float = 0.05
     # learning rate scheduler, policy to decrease
