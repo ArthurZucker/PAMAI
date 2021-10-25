@@ -261,8 +261,7 @@ class DenetAgent(BaseAgent):
             # Visualize the data
             vis = sed_vis.visualization.EventListVisualizer(event_lists=event_lists,
                                                         audio_signal=audio_container.data,
-                                                        sampling_rate=audio_container.fs,
-                                                        show_selector = False)
+                                                        sampling_rate=audio_container.fs)
 
             # @TODO add to config file
             plt.ioff()
