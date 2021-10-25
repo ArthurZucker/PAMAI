@@ -58,6 +58,9 @@ But in the `annotation.csv`, the corresponding labels are the following:
 
 Not only is a single call labeled, but the tail of it is also marked as `context = 1`. This makes it a bit strange. Though we can actually see that there is some noise/signal at the end of the recording, which annotation should we trust. 
 
+I decided to merge the to files, ignoring the files without labels. This allows for a subsampling of the already huge dataset. 
+
+
 ### Dataloader
 
 This has a huge impact on the way I will chose to label the data from a given random begin and end sample. 
@@ -69,11 +72,17 @@ I don't have a lot of options.
 **Solution** : Will simply process the labels beforehand. Dataloader will load the random sample's label.
 I should also subsample the dataset to keep mostly calls that have a class or emitter label. This will both reduce the database size and allow for easier data augmentation (adding other animals) 
 
-On thing that can be said is that bat calls (and here I don't mean phonemes I mean fully "calls") can be easily grouped together based on the separation. YOLOR's results give phonemes, but we can simply infer the actual call. This is not very accurate, but can work. 
+One thing that can be said is that bat calls (and here I don't mean phonemes I mean fully "calls") can be easily grouped together based on the separation. YOLOR's results give phonemes, but we can simply infer the actual call. This is not very accurate, but can work. 
 
-### In process : 
+#### In process : 
 - Given the previous section, I will write a data-processing function in `/utils` which will write the `.csv` label file to the `/assets` repository. 
+Then, labels are given to a random audio sequence based on its position. If it is between the minium `start_sample` and maximum `end_sample` I gave it a the label `1` for now, which is that of a bat call. Giving the context or emitter label is straightforward but need to be done 
+>@TODO 
 
+### Visualization 
+
+I create scripts to add the visualization of the detection on validation data at val time. Again, since the input of the network is 200ms (or more) **I can't feed it with the full audio can I?**
+> If i can't, I need to write a script to process the full audio, and give individual labels. 
 
 ## More ideas:
 - Add FF call to background sounds and use it as training. Hashizume's FF already have Background noises. 

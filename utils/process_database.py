@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+import torchaudio
 
 def sub_sample_dataset(filename1 : str,filename2:str,res_path:str = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/subsampled_datset.csv"):
     """Extract emitter and context labeled data form the filename dataset  
@@ -47,6 +47,34 @@ def show_info(data : pd.DataFrame):
     print(f"Known emitter calls : {nb_known_emitter_calls}")
     print(f"Known context calls : {nb_known_context_calls}")
     print(f"Known calls from which the gender of the emitter is known: {nb_known_call_genders}")
+
+
+
+def create_reference_lists_from_path(sample,label,ws):
+    """ Creates an annotation file for visualizing in sed_vis
+    Args:
+        samples : name of the audio files being processed
+        label   : labels available for the audio files
+        ws      : window size 
+    Return :
+        Nothing
+    """
+    for i,wav in enumerate(sample): 
+        audio,sr = torchaudio.load(wav)
+        lab = []
+        for b in range(0,audio.shape[1],ws): 
+            lab.append(extract_label_bat(label.iloc[i],b,b+ws))
+    return 
+
+def create_estimated_lists_from_output(sample,output):
+    """ Creates an annotation file for visualizing in sed_vis
+    Args:
+        sample: name of the audio file being processed
+        output : labels predicted by the NN 
+    Return :
+        Nothing
+    """
+    return
 
 if __name__ == '__main__':
     path = "/home/arthur/Work/FlyingFoxes/database/EgyptianFruitBats"

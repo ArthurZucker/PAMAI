@@ -96,7 +96,7 @@ class Sincnet(nn.Module):
         
        # removed the next line given the correct input of my dataloader
        # x=x.view(batch,1,seq_len)
-
+       
        
        for i in range(self.N_cnn_lay):
            

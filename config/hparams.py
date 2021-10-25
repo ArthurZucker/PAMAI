@@ -80,7 +80,7 @@ class hparams:
     cw_len: int = 200
     # overlap in ms between the samples taken from the input
     cw_shift: int = 10
-    # input dimension in terms of samples, actual input size of the NN 
+    # input dimension in terms of samples, actual input size of the NN here, 1600
     input_dim: int = int(fs*cw_len/1000.00)
     # Regex to process lists
     #  =([^ ].*?),(.*)\)

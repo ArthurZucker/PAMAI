@@ -22,13 +22,16 @@ from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy
 from utils.misc import print_cuda_statistics
 from utils.train_utils import adjust_learning_rate
 from utils.train_utils import get_net,get_loss,get_optimizer
-
+from utils.process_database import create_estimated_lists_from_output, create_reference_lists_from_path
 # visualisation tool
 import sed_vis
 import dcase_util
 import wandb
 import pandas as pd
 import matplotlib.pyplot as plt
+import torchaudio
+
+
 from os import path
 cudnn.benchmark = True
 
@@ -214,7 +217,7 @@ class DenetAgent(BaseAgent):
             self.current_iteration += 1
             current_batch += 1
 
-            self.wandb.log({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val,"logits": wandb.Histogram(y.cpu())})
+            self.wandb.log({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
             
             if self.config.test_mode and current_batch == 11: 
                 break
@@ -229,10 +232,22 @@ class DenetAgent(BaseAgent):
         #----------------------------------------------------#
         #               Sound visualisation logger
         vis_path = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/sed_vis/"
-        templates_path = self.data_loader.valid_loader.dataset.indices[0:1000:100]
-        paths = pd.read_csv(self.config.annotation_file)['File name'][templates_path]
+        templates_path = self.data_loader.valid_loader.dataset.indices[0:1000:100] 
+        annotations = pd.read_csv(self.config.annotation_file)
+        paths  = annotations['File name'][templates_path]
+        labels = annotations.iloc[templates_path]
         for p in paths:
-            audio_container = dcase_util.containers.AudioContainer().load(path.join(self.config.img_dir,p))
+            sample = path.join(self.config.img_dir,p)
+            audio_container = dcase_util.containers.AudioContainer().load(sample)
+            audio,sr = torchaudio.load(sample)
+            end = (audio.shape[1]-(audio.shape[1]%1600))
+            audio = audio[0][:end]
+            batches = Variable(audio.view(-1,1,1600))
+            pred = self.model(batches.cuda())
+            
+            create_reference_lists_from_path(sample,labels)
+            
+            create_estimated_lists_from_output(sample,pred)
             reference_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001.ann')
             estimated_event_list = dcase_util.containers.MetaDataContainer().load(vis_path + 'tests/data/a001_system_output.ann')
 
@@ -285,8 +300,7 @@ class DenetAgent(BaseAgent):
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
             self.visualize()
-            self.wandb.log({"sed_vis": wandb.Image(self.config.visualization_path),
-                            "epoch/validation_loss": epoch_loss.val,
+            self.wandb.log({"epoch/validation_loss": epoch_loss.val,
                             "epoch/validation_accuracy": top1_acc.val
                             })
             if self.config.test_mode: 
