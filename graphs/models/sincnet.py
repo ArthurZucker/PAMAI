@@ -14,13 +14,16 @@ from graphs.weights_initializer import weights_init
 from graphs.models.custom_layers.layer_norm import LayerNorm
 from utils.train_utils import get_act_func
 from graphs.models.custom_layers.sinc_conv import SincConv_fast
-
+from graphs.models.custom_layers.MLP_sincnet import MLP
 
 class Sincnet(nn.Module):
     
     def __init__(self,options):
        super(Sincnet,self).__init__()
     
+      #  self.MLP = MLP(options)
+      # @TODO use MLP for a classification of the feature outputed by sincnet 
+
        self.cnn_N_filt=options.cnn_N_filt
        self.cnn_len_filt=options.cnn_len_filt
        self.cnn_max_pool_len=options.cnn_max_pool_len
