@@ -18,7 +18,7 @@ from datasets.raw_audio import raw_audio_Dataloader
 
 # import your classes here
 from tensorboardX import SummaryWriter
-from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy
+from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy,compute_metrics
 from utils.misc import print_cuda_statistics
 from utils.train_utils import adjust_learning_rate
 from utils.train_utils import get_net,get_loss,get_optimizer
@@ -218,7 +218,10 @@ class DenetAgent(BaseAgent):
             self.current_iteration += 1
             current_batch += 1
 
-            self.wandb.log({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
+            output = torch.argmax(pred,dim=1)
+            dic = compute_metrics(output.cpu(),y.data.cpu())
+            dic.update({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
+            self.wandb.log(dic)
             
             if self.config.test_mode and current_batch == 11: 
                 break
