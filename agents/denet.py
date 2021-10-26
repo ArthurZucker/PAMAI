@@ -217,11 +217,8 @@ class DenetAgent(BaseAgent):
 
             self.current_iteration += 1
             current_batch += 1
-
-            output = torch.argmax(pred,dim=1)
-            dic = compute_metrics(output.cpu(),y.data.cpu())
-            dic.update({"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
-            self.wandb.log(dic)
+            
+            self.wandb.log( {"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
             
             if self.config.test_mode and current_batch == 11: 
                 break
@@ -272,6 +269,8 @@ class DenetAgent(BaseAgent):
             # vis.save(self.config.visualization_path)
             plt_chart.append(wandb.Image(plt))
         self.wandb.log({"chart": plt_chart})
+        for plt in plt_chart:
+            plt.close()
 
     def validate(self):
         """
@@ -281,7 +280,7 @@ class DenetAgent(BaseAgent):
         if self.config.test_mode:
             self.data_loader.valid_iterations = 5
         tqdm_batch = tqdm(self.data_loader.valid_loader, total=self.data_loader.valid_iterations,
-                          desc="Valiation at -{}-".format(self.current_epoch))
+                          desc="Validation at -{}-".format(self.current_epoch))
 
         # set the model in training mode
         self.model.eval()
@@ -307,10 +306,13 @@ class DenetAgent(BaseAgent):
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
+            output = torch.argmax(pred,dim=1)
+            dic = compute_metrics(output.cpu(),y.data.cpu())
+            dic.update({"epoch/validation_loss": epoch_loss.val,
+                        "epoch/validation_accuracy": top1_acc.val
+                        })
+            self.wandb.log(dic)
             
-            self.wandb.log({"epoch/validation_loss": epoch_loss.val,
-                            "epoch/validation_accuracy": top1_acc.val
-                            })
             current_batch += 1
             if self.config.test_mode and current_batch == 5: 
                     break

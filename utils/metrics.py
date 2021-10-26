@@ -130,13 +130,14 @@ def compute_metrics(output, target):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('Receiver operating characteristic example')
+    plt.title('Receiver operating characteristic weighted')
     plt.legend(loc="lower right")
 
-    dic = {"epoch/Average Precision"  : ap,
-           "epoch/F1 score "          : f1,
-           "epoch/Precision"          : pr,
-           "epoch/Recall"             : rc,
-           "epoch/Roc"                : wandb.Image(plt)}
+    dic = {"epoch/Average Precision (weighted)"  : ap,
+           "epoch/F1 score (weighted) "          : f1,
+           "epoch/Precision (weighted)"          : pr,
+           "epoch/Recall (weighted)"             : rc,
+           "epoch/Roc (weighted)"                : wandb.Image(plt)}
+    plt.close()
     return dic
 

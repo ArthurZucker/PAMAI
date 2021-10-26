@@ -48,7 +48,7 @@ class hparams:
     # loss
     loss: str = "NNL"
     # optimization
-    batch_size: int =128
+    batch_size: int =512
     N_epochs: int = 2900
     N_batches: int = 100
     N_eval_epoch: int = 50
@@ -62,7 +62,7 @@ class hparams:
     # mode
     mode: str = "train"
     # Toggle testing mode, which only runs a few epochs and val
-    test_mode: bool = True
+    test_mode: bool = False
     # max epoch tu run 
     max_epoch: int = 100
     # async_loading
