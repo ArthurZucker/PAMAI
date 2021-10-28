@@ -42,7 +42,7 @@ class hparams:
     # Rank in the cluster
     global_rank: int = 0
     # Number of epochs
-    epochs: int = 10
+    epochs: int = 5
     # optimizer 
     optimizer: str = "Rmsprop"
     # loss
@@ -64,7 +64,7 @@ class hparams:
     # Toggle testing mode, which only runs a few epochs and val
     test_mode: bool = False
     # max epoch tu run 
-    max_epoch: int = 100
+    max_epoch: int = 5
     # async_loading
     async_loading: bool = True
 

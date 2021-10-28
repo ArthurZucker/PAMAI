@@ -217,7 +217,7 @@ class DenetAgent(BaseAgent):
 
             self.current_iteration += 1
             current_batch += 1
-            
+
             self.wandb.log( {"epoch/loss": epoch_loss.val,"epoch/accuracy": top1_acc.val})
             
             if self.config.test_mode and current_batch == 11: 
@@ -268,9 +268,8 @@ class DenetAgent(BaseAgent):
             vis.generate_GUI()
             # vis.save(self.config.visualization_path)
             plt_chart.append(wandb.Image(plt))
-        self.wandb.log({"chart": plt_chart})
-        for plt in plt_chart:
             plt.close()
+        self.wandb.log({"chart": plt_chart})
 
     def validate(self):
         """
