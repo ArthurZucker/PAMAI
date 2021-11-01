@@ -17,8 +17,7 @@ from datasets.raw_audio import raw_audio_Dataloader
 # import dataset
 
 # import your classes here
-from tensorboardX import SummaryWriter
-from utils.metrics import AverageMeter, AverageMeterList, cls_accuracy,compute_metrics
+from utils.metrics import AverageMeter, IOUMetric, cls_accuracy,compute_metrics
 from utils.misc import print_cuda_statistics
 from utils.train_utils import adjust_learning_rate
 from utils.train_utils import get_net,get_loss,get_optimizer
@@ -86,9 +85,7 @@ class DenetAgent(BaseAgent):
 
         # Model Loading from the latest checkpoint if not found start from scratch.
         self.load_checkpoint(self.config.checkpoint_file)
-        # Summary Writer, useless since I use wandb
-        # self.summary_writer = SummaryWriter(log_dir=self.config.summary_dir, comment='FirstTest')
-
+       
     def load_checkpoint(self, filename):
         """
         Latest checkpoint loader
@@ -167,9 +164,6 @@ class DenetAgent(BaseAgent):
                     self.best_valid_acc = valid_acc
                 self.save_checkpoint(is_best=is_best)
                 
-        
-
-
     def train_one_epoch(self):
         """
         One epoch of training
@@ -287,6 +281,7 @@ class DenetAgent(BaseAgent):
         epoch_loss = AverageMeter()
         top1_acc = AverageMeter()
         top5_acc = AverageMeter()
+        # iou = IOUMetric(self.config.num_classes)
         current_batch = 0 
         for x, y in tqdm_batch:
             if self.cuda:
@@ -301,14 +296,15 @@ class DenetAgent(BaseAgent):
                 raise ValueError('Loss is nan during validation...')
 
             top1 = cls_accuracy(pred.data, y.data)
-
+            iou.add_batch(x, y)
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
             output = torch.argmax(pred,dim=1)
             dic = compute_metrics(output.cpu(),y.data.cpu())
             dic.update({"epoch/validation_loss": epoch_loss.val,
-                        "epoch/validation_accuracy": top1_acc.val
+                        "epoch/validation_accuracy": top1_acc.val,
+                        "iou":iou.evaluate()[-2]
                         })
             self.wandb.log(dic)
             
