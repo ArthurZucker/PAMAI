@@ -26,9 +26,10 @@ Moreover, I am using my template implementation which allows to easily switch be
 - [x] Create training agent
 - [x] Add utils and choose metric 
 - [x] Sample training on subset 
-- [ ] **Use fp16 and mixed precision with apex!**
 - [ ] Clean hparams
-- [ ] Use https://tut-arg.github.io/sed_eval/sound_event.html
+- [ ] Use time distributed for `visualize` function (process full audio)
+- [ ] **Use fp16 and mixed precision with apex!**
+- [ ] Use https://tut-arg.github.io/sed_eval/sound_event.html var validation metrics
 - [ ] Create Docker 
 - [ ] Details on the readme 
 - [ ] Add to my website 

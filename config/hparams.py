@@ -64,7 +64,7 @@ class hparams:
     # mode
     mode: str = "train"
     # Toggle testing mode, which only runs a few epochs and val
-    test_mode: bool = True
+    test_mode: bool = False
     # max epoch tu run 
     max_epoch: int = 5
     # async_loading
