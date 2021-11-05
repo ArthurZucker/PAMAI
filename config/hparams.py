@@ -22,7 +22,7 @@ class hparams:
     # gpu_device
     gpu_device: int = 0 
     # Architecture to choose, available are "denet (to come)", "sincnet (to come)", "leaf (to come)", "yolor (to come)"
-    arch: str = "sincnet"
+    arch: str = "denet"
     #Agent to use, the agent has his own trining loop
     agent: str = "DenetAgent"
     # Dataset used for training
@@ -33,6 +33,8 @@ class hparams:
     annotation_file: str = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/subsampled_datset.csv"
     # Number of workers used for the dataloader
     num_workers: int = 8
+    # number of classes to consider
+    num_classes: int = 2
     # Sampling rate of the raw audio
     sr: int = 25000  # in HZ
     # Probability of dropout
@@ -48,7 +50,7 @@ class hparams:
     # loss
     loss: str = "NNL"
     # optimization
-    batch_size: int =512
+    batch_size: int = 4
     N_epochs: int = 2900
     N_batches: int = 100
     N_eval_epoch: int = 50
@@ -62,22 +64,17 @@ class hparams:
     # mode
     mode: str = "train"
     # Toggle testing mode, which only runs a few epochs and val
-    test_mode: bool = False
+    test_mode: bool = True
     # max epoch tu run 
     max_epoch: int = 5
     # async_loading
     async_loading: bool = True
-
-# @dataclass
-# class sincnet:
-    """Hyperparameters of the sincnetmodel"""
-
     # activation function
     activation: str = "relu"
     # frequency sample
     fs: int = 8000
     # length of the input in ms
-    cw_len: int = 500
+    cw_len: int = 100
     # overlap in ms between the samples taken from the input
     cw_shift: int = 10
     # input dimension in terms of samples, actual input size of the NN here, 1600
@@ -106,7 +103,12 @@ class hparams:
     fc_use_laynorm: List[bool] = list_field(False,False,False,False,False,False)
     fc_act: List[str] = list_field("leaky_relu","linear","leaky_relu","leaky_relu","leaky_relu","softmax")
 
-
-
-    
-    
+    # Denet parameters
+    # Denet dropout 
+    DenetDropout: float = 0.3
+    # number of classes 
+    nb_classes: int = 2
+    # apply attention before pooling
+    DenetBeforePooling: bool = True
+    # Sum over channels
+    SumChannel: bool = True

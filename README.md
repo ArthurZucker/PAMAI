@@ -21,12 +21,14 @@ Moreover, I am using my template implementation which allows to easily switch be
 - [x] Create dataset
 - [x] Add `get_model`, `get_loss`, `get_optimizer` from the names
 - [x] Create dataloaders
-- [ ] Convert both [__init__.py](./__init__.py) and [layers.py](./layers.py) to pytorch (since its now in tensorflow)
-- [ ] Create model 
-- [ ] Create training agent
-- [ ] Add utils and choose metric 
-- [ ] Sample training on subset 
+- [x] Convert both [__init__.py](./__init__.py) and [layers.py](./layers.py) to pytorch (since its now in tensorflow)
+- [x] Create model 
+- [x] Create training agent
+- [x] Add utils and choose metric 
+- [x] Sample training on subset 
 - [ ] **Use fp16 and mixed precision with apex!**
+- [ ] Clean hparams
+- [ ] Use https://tut-arg.github.io/sed_eval/sound_event.html
 - [ ] Create Docker 
 - [ ] Details on the readme 
 - [ ] Add to my website 
@@ -120,3 +122,6 @@ Our dataset only has positive instances -- bat calls are almost always present i
 | 12 | Sleeping | The interaction occurs in the sleep cluster. |  |
 
 
+
+## DENet 
+Implemented it, but for now I can't use the attention because the MLP takes too much memory. 

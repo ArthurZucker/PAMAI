@@ -296,22 +296,22 @@ class DenetAgent(BaseAgent):
                 raise ValueError('Loss is nan during validation...')
 
             top1 = cls_accuracy(pred.data, y.data)
-            iou.add_batch(x, y)
+            # raiou.add_batch(x, y)
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
             output = torch.argmax(pred,dim=1)
             dic = compute_metrics(output.cpu(),y.data.cpu())
             dic.update({"epoch/validation_loss": epoch_loss.val,
-                        "epoch/validation_accuracy": top1_acc.val,
-                        "iou":iou.evaluate()[-2]
+                        "epoch/validation_accuracy": top1_acc.val
+                        #"iou":iou.evaluate()[-2]
                         })
             self.wandb.log(dic)
             
             current_batch += 1
             if self.config.test_mode and current_batch == 5: 
                     break
-        self.visualize()            
+        # self.visualize()            
         print("Validation results at epoch-" + str(self.current_epoch) + " | " + "loss: " + str(
             epoch_loss.avg) + "- Top1 Acc: " + str(top1_acc.val) + "- Top5 Acc: " + str(top5_acc.val))
 
