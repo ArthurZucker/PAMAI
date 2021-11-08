@@ -50,12 +50,12 @@ class hparams:
     # loss
     loss: str = "NNL"
     # optimization
-    batch_size: int = 4
+    batch_size: int = 32
     N_epochs: int = 2900
     N_batches: int = 100
     N_eval_epoch: int = 50
     reg_factor: int = 10000
-    fact_amp: float =0.2
+    fact_amp: float = 0.2
     seed: int = 1234
     # checkpoint dir
     checkpoint_dir: str = "weights"
@@ -74,7 +74,7 @@ class hparams:
     # frequency sample
     fs: int = 8000
     # length of the input in ms
-    cw_len: int = 100
+    cw_len: int = 500
     # overlap in ms between the samples taken from the input
     cw_shift: int = 10
     # input dimension in terms of samples, actual input size of the NN here, 1600

@@ -27,6 +27,7 @@ Moreover, I am using my template implementation which allows to easily switch be
 - [x] Add utils and choose metric 
 - [x] Sample training on subset 
 - [ ] Clean hparams
+- [ ] Use profiler to check training time and dataleaks
 - [ ] Use time distributed for `visualize` function (process full audio)
 - [ ] **Use fp16 and mixed precision with apex!**
 - [ ] Use https://tut-arg.github.io/sed_eval/sound_event.html var validation metrics

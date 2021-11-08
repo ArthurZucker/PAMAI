@@ -178,7 +178,7 @@ class DenetAgent(BaseAgent):
                           desc="Epoch-{}-".format(self.current_epoch),leave=True)
         # Set the model to be in training mode
         self.model.train()
-        # Initialize your average meters @TODO: ARTHUR I still don't know what that is
+        # Initialize your average meters 
         epoch_loss = AverageMeter()
         top1_acc = AverageMeter()
         top5_acc = AverageMeter()
@@ -204,7 +204,8 @@ class DenetAgent(BaseAgent):
             cur_loss.backward()
             self.optimizer.step()
 
-            top1 = cls_accuracy(pred.data, y.data)
+            # should I really use .cpu()?????????? @TODO
+            top1 = cls_accuracy(pred.detach().cpu(), y.detach().cpu())
 
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))
@@ -238,7 +239,9 @@ class DenetAgent(BaseAgent):
             end = (audio.shape[1]-(audio.shape[1]%self.config.input_dim))
             audio = audio[0][:end]
             batches = Variable(audio.view(-1,1,self.config.input_dim))
-            pred = self.model(batches.cuda())
+            
+            # should I really use .cpu()?????????? @TODO
+            pred = self.model(batches.cuda()).detach().cpu()
             label = np.array(labels.loc[labels['File name'] == p])[0]
             create_reference_lists_from_path(sample,label,self.config.input_dim,sr)
             
@@ -294,14 +297,15 @@ class DenetAgent(BaseAgent):
             cur_loss = self.loss(pred, y)
             if np.isnan(float(cur_loss.item())):
                 raise ValueError('Loss is nan during validation...')
-
-            top1 = cls_accuracy(pred.data, y.data)
+            
+            # should I really use .cpu()?????????? @TODO
+            top1 = cls_accuracy(pred.detach().cpu(), y.detach().cpu())
             # raiou.add_batch(x, y)
             epoch_loss.update(cur_loss.item())
             top1_acc.update(top1[0].item(), x.size(0))    
             # update visualization        
             output = torch.argmax(pred,dim=1)
-            dic = compute_metrics(output.cpu(),y.data.cpu())
+            dic = compute_metrics(output.cpu(),y.detach().cpu())
             dic.update({"epoch/validation_loss": epoch_loss.val,
                         "epoch/validation_accuracy": top1_acc.val
                         #"iou":iou.evaluate()[-2]
