@@ -32,7 +32,7 @@ class hparams:
     # annotation path 
     annotation_file: str = "/home/arthur/Work/FlyingFoxes/sources/flying_foxes_study/AudioEventDetection/DENet/assets/subsampled_datset.csv"
     # Number of workers used for the dataloader
-    num_workers: int = 8
+    num_workers: int = 16
     # number of classes to consider
     num_classes: int = 2
     # Sampling rate of the raw audio
@@ -47,6 +47,8 @@ class hparams:
     epochs: int = 5
     # optimizer 
     optimizer: str = "Rmsprop"
+    # decay : 
+    weight_decay: float = 0.001
     # loss
     loss: str = "NNL"
     # optimization
@@ -64,7 +66,7 @@ class hparams:
     # mode
     mode: str = "train"
     # Toggle testing mode, which only runs a few epochs and val
-    test_mode: bool = False
+    test_mode: bool = True
     # max epoch tu run 
     max_epoch: int = 5
     # async_loading
@@ -112,3 +114,6 @@ class hparams:
     DenetBeforePooling: bool = True
     # Sum over channels
     SumChannel: bool = True
+
+     # amsgrad
+    amsgrad: float = 0

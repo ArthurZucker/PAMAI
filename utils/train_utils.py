@@ -69,13 +69,13 @@ def get_optimizer(args, net):
     """
     param_groups = net.parameters()
 
-    if args.optimizer == 'sgd':
+    if args.optimizer == 'SGD':
         optimizer = optim.SGD(param_groups,
                               lr=args.lr,
                               weight_decay=args.weight_decay,
                               momentum=args.momentum,
                               nesterov=False)
-    elif args.optimizer == 'adam':
+    elif args.optimizer == 'Adam':
         optimizer = optim.Adam(param_groups,
                                lr=args.lr,
                                weight_decay=args.weight_decay,

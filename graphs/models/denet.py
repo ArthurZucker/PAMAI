@@ -25,7 +25,7 @@ class Denet(nn.Module):
         self.dropout            = nn.Dropout(self.config.DenetDropout)
         # input dimension -sinc_kernel_filter size - 2xkernel dimension of convolution which is 5
         self.gru_dim_in         = self.conv2_dim_out 
-        self.gru                = nn.GRU(self.gru_dim_in,1024,bidirectional=True,dropout=self.config.DenetDropout)
+        self.gru                = nn.GRU(self.gru_dim_in,1024,bidirectional=True,dropout=self.config.DenetDropout,batch_first = True)
         self.mlp1               = nn.Sequential(nn.Linear(2048*60,1024),nn.BatchNorm1d(1024),nn.LeakyReLU())
         self.mlp2               = nn.Sequential(nn.Linear(1024,512),nn.BatchNorm1d(512),nn.LeakyReLU())
         self.fcn                = nn.Linear(512,self.config.nb_classes)
