@@ -1,10 +1,11 @@
 """
 This file will contain the metrics of the framework
 """
+import matplotlib.pyplot as plt
 import numpy as np
 import sklearn.metrics as mt
-import matplotlib.pyplot as plt
 import wandb
+
 
 class IOUMetric:
     """

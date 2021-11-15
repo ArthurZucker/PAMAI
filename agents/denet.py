@@ -1,37 +1,38 @@
-import numpy as np
-
-from tqdm import tqdm
-import shutil
 import random
+import shutil
+from os import path
 
-import torch
-from torch import nn
-from torch.backends import cudnn
-from torch.autograd import Variable
-from torch.optim.lr_scheduler import ExponentialLR
-#import model
-from agents.base import BaseAgent
-from graphs.models import Denet
-from graphs.losses.example import BinaryCrossEntropy
-from datasets.raw_audio import raw_audio_Dataloader
-# import dataset
-
-# import your classes here
-from utils.metrics import AverageMeter, IOUMetric, cls_accuracy,compute_metrics
-from utils.misc import print_cuda_statistics
-from utils.train_utils import adjust_learning_rate
-from utils.train_utils import get_net,get_loss,get_optimizer
-from utils.process_database import create_estimated_lists_from_output, create_reference_lists_from_path
+import dcase_util
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 # visualisation tool
 import sed_vis
-import dcase_util
-import wandb
-import pandas as pd
-import matplotlib.pyplot as plt
+import torch
 import torchaudio
+import wandb
+from datasets.raw_audio import raw_audio_Dataloader
+from torch import nn
+from torch.autograd import Variable
+from torch.backends import cudnn
+from torch.optim.lr_scheduler import ExponentialLR
+from tqdm import tqdm
+# import your classes here
+from utils.metrics import (AverageMeter, IOUMetric, cls_accuracy,
+                           compute_metrics)
+from utils.misc import print_cuda_statistics
+from utils.process_database import (create_estimated_lists_from_output,
+                                    create_reference_lists_from_path)
+from utils.train_utils import (adjust_learning_rate, get_loss, get_net,
+                               get_optimizer)
+
+#import model
+from agents.base import BaseAgent
+
+# import dataset
 
 
-from os import path
+
 cudnn.benchmark = True
 
 

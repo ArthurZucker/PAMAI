@@ -6,7 +6,7 @@ from graphs.models.custom_layers.layer_norm import LayerNorm
 
 class MLP(nn.Module):
     def __init__(self, options,fc_input_dim):
-        super(MLP, self).__init__()
+        super().__init__()
         
         self.input_dim=int(fc_input_dim)
         self.fc_lay=options.fc_lay
@@ -32,7 +32,7 @@ class MLP(nn.Module):
           
         # input batch normalization    
         if self.fc_use_batchnorm_inp:
-           self.bn0=nn.BatchNorm1d([self.input_dim],momentum=0.05)
+          self.bn0=nn.BatchNorm1d([self.input_dim],momentum=0.05)
            
            
         self.N_fc_lay=len(self.fc_lay)
