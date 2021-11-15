@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from torch.backends import cudnn
 from torch.autograd import Variable
-
+from torch.optim.lr_scheduler import ExponentialLR
 #import model
 from agents.base import BaseAgent
 from graphs.models import Denet
@@ -58,7 +58,7 @@ class DenetAgent(BaseAgent):
 
         # define optimizers for both generator and discriminator
         self.optimizer = get_optimizer(config,self.model)
-
+        self.scheduler = ExponentialLR(self.optimizer, gamma=0.9)
         # initialize counter
         self.current_epoch = 0
         self.current_iteration = 0
@@ -156,7 +156,7 @@ class DenetAgent(BaseAgent):
         for epoch in range(self.current_epoch, min(max_epoch,self.config.max_epoch)):
             self.current_epoch = epoch
             self.train_one_epoch()
-
+            self.scheduler.step()
             if epoch%self.config.validate_every==0 :
                 valid_acc = self.validate()
                 is_best = valid_acc > self.best_valid_acc
@@ -188,8 +188,6 @@ class DenetAgent(BaseAgent):
             if self.cuda:
                 x, y = x.cuda(non_blocking=self.config.async_loading), y.cuda(non_blocking=self.config.async_loading)
             x, y = Variable(x), y.type(torch.long) # Needed to compute the gradient from x
-            lr = adjust_learning_rate(self.optimizer, self.current_epoch, self.config, batch=current_batch,
-                                      nBatch=self.data_loader.train_iterations)
             
             self.optimizer.zero_grad() 
             # model
