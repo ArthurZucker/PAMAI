@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 # visualisation tool
-import sed_vis
+# import sed_vis
 import torch
 import torchaudio
 import wandb
@@ -255,13 +255,13 @@ class DenetAgent(BaseAgent):
             }
 
             # Visualize the data
-            vis = sed_vis.visualization.EventListVisualizer(event_lists=event_lists,
-                                                        audio_signal=audio_container.data,
-                                                        sampling_rate=audio_container.fs)
+            # vis = sed_vis.visualization.EventListVisualizer(event_lists=event_lists,
+            #                                             audio_signal=audio_container.data,
+            #                                             sampling_rate=audio_container.fs)
 
             # @TODO add to config file
             plt.ioff()
-            vis.generate_GUI()
+            # vis.generate_GUI()
             # vis.save(self.config.visualization_path)
             plt_chart.append(wandb.Image(plt))
             plt.close()
