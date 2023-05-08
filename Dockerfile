@@ -12,11 +12,8 @@ ENV PATH=/venv/bin:$PATH
 
 RUN apt-get install build-essential -y
 
-RUN git clone https://github.com/ArthurZucker/PAMAI.git
-RUN rm /workspace/PAMAI/requirements.txt
-COPY requirements.txt /workspace/PAMAI/requirements.txt
+# RUN git clone https://github.com/ArthurZucker/PAMAI.git
 RUN python -m pip install --upgrade pip setuptools wheel 
-RUN python -m pip install pybind11
-RUN python -m pip install -r /workspace/PAMAI/requirements.txt
+RUN python -m pip install pamai
 
 WORKDIR /workspace/PAMAI

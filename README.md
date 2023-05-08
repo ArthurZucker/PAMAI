@@ -5,9 +5,10 @@
 
 ## Author 
 - [Arthur Zucker](https://github.com/ArthurZucker)
+- [Chris Rauch](https://github.com/chrisrauch193)
 
 ## Installation 
-Clone this repository 
+Clone this repository
 
 ## Model 
 The model is available at the original github repository : git@github.com:MiviaLab/DENet.git
