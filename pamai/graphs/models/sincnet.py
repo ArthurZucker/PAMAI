@@ -10,11 +10,11 @@ import sys
 from torch.autograd import Variable
 import math
 # added from my template
-from graphs.weights_initializer import weights_init
-from graphs.models.custom_layers.layer_norm import LayerNorm
-from utils.train_utils import get_act_func
-from graphs.models.custom_layers.sinc_conv import SincConv_fast
-from graphs.models.custom_layers.MLP_sincnet import MLP
+from pamai.graphs.weights_initializer import weights_init
+from pamai.graphs.models.custom_layers.layer_norm import LayerNorm
+from pamai.utils.train_utils import get_act_func
+from pamai.graphs.models.custom_layers.sinc_conv import SincConv_fast
+from pamai.graphs.models.custom_layers.MLP_sincnet import MLP
 from easydict import EasyDict as edict
 
 

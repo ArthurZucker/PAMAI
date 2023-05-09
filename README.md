@@ -5,9 +5,10 @@
 
 ## Author 
 - [Arthur Zucker](https://github.com/ArthurZucker)
+- [Chris Rauch](https://github.com/chrisrauch193)
 
 ## Installation 
-Clone this repository 
+Clone this repository
 
 ## Model 
 The model is available at the original github repository : git@github.com:MiviaLab/DENet.git
@@ -126,4 +127,10 @@ Our dataset only has positive instances -- bat calls are almost always present i
 
 
 ## DENet 
-Implemented it, but for now I can't use the attention because the MLP takes too much memory. 
+Implemented it, but for now I can't use the attention because the MLP takes too much memory.
+
+## Docker
+```bash
+docker build . --network=host -t pytorch-latest-pamai
+docker run -it --rm --name pytorch-container --network=host pytorch-latest-pamai bash
+```

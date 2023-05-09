@@ -1,7 +1,7 @@
 from torch._C import memory_format
 from torch.nn.functional import layer_norm
 import torch
-from graphs.models.custom_layers.MLP_sincnet import MLP
+from pamai.graphs.models.custom_layers.MLP_sincnet import MLP
 import torch.nn as nn
 class DELayer(nn.Module):
     def __init__(self,input_dim,input_channels, data_format="channels_last", sum_channels=True, dropout=0.0, **kwargs):

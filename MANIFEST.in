@@ -1,0 +1,5 @@
+# MANIFEST.in
+include pamai/graphs
+include pamai/utils
+include pamai/datasets
+include pamai/scripts

@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 import torch.nn.functional as F
 import numpy as np
-from utils.signal_processing import sinc
+from pamai.utils.signal_processing import sinc
 from torch.autograd import Variable
 import math
 
