@@ -48,14 +48,17 @@ def get_net(args):
     net = get_model(args)
     num_params = sum([param.nelement() for param in net.parameters()])
     print('Model params = {:2.1f}M'.format(num_params / 1000000))
-    net = net.cuda()
-    return net
+    if torch.cuda.is_available():
+        return net.cuda()
+    else:
+        device = torch.device("cpu")
+        return net.to(device)
 
 def get_model(args):
     """
     Fetch Network Function Pointer
     """
-    module='graphs.models.'+args.arch
+    module='pamai.graphs.models.'+args.arch
     mod = importlib.import_module(module)
     net = getattr(mod, (args.arch.title()))
     return net(args)

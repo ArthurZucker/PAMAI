@@ -3,8 +3,8 @@ An example for the model class
 """
 import torch
 import torch.nn as nn
-from graphs.models.custom_layers.de_layer import DELayer
-from graphs.models.custom_layers.sinc_conv import SincConv_fast
+from pamai.graphs.models.custom_layers.de_layer import DELayer
+from pamai.graphs.models.custom_layers.sinc_conv import SincConv_fast
 
 
 class Denet(nn.Module):

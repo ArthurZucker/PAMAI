@@ -1,6 +1,6 @@
 
 from runx.logx import logx
-from config import cfg
+from pamai.config import cfg
 
 def get_loss(args):
     """

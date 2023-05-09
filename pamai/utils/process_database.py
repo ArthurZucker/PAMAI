@@ -49,7 +49,7 @@ def show_info(data : pd.DataFrame):
     print(f"Known context calls : {nb_known_context_calls}")
     print(f"Known calls from which the gender of the emitter is known: {nb_known_call_genders}")
 
-from utils.signal_processing import extract_label_bat
+from pamai.utils.signal_processing import extract_label_bat
 
 def create_reference_lists_from_path(sample,label,ws,fs):
     """ Creates an annotation file for visualizing in sed_vis

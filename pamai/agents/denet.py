@@ -11,23 +11,23 @@ import pandas as pd
 import torch
 import torchaudio
 import wandb
-from datasets.raw_audio import raw_audio_Dataloader
+from pamai.datasets.raw_audio import raw_audio_Dataloader
 from torch import nn
 from torch.autograd import Variable
 from torch.backends import cudnn
 from torch.optim.lr_scheduler import ExponentialLR
 from tqdm import tqdm
 # import your classes here
-from utils.metrics import (AverageMeter, IOUMetric, cls_accuracy,
+from pamai.utils.metrics import (AverageMeter, IOUMetric, cls_accuracy,
                            compute_metrics)
-from utils.misc import print_cuda_statistics
-from utils.process_database import (create_estimated_lists_from_output,
+from pamai.utils.misc import print_cuda_statistics
+from pamai.utils.process_database import (create_estimated_lists_from_output,
                                     create_reference_lists_from_path)
-from utils.train_utils import (adjust_learning_rate, get_loss, get_net,
+from pamai.utils.train_utils import (adjust_learning_rate, get_loss, get_net,
                                get_optimizer)
 
 #import model
-from agents.base import BaseAgent
+from pamai.agents.base import BaseAgent
 
 # import dataset
 

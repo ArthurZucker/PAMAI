@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Subset
 
-from datasets.raw_audio_dataset import raw_audio_dataset
+from pamai.datasets.raw_audio_dataset import raw_audio_dataset
 
 
 class raw_audio_Dataloader:

@@ -3,7 +3,7 @@ import torchaudio
 
 import glob
 from torch.utils.data import Dataset
-from utils.signal_processing import get_rnd_audio,extract_label_bat
+from pamai.utils.signal_processing import get_rnd_audio,extract_label_bat
 from pandas import read_csv
 from os import path
 class raw_audio_dataset(Dataset):

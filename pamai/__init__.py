@@ -1,4 +1,6 @@
 # __init__.py
+# Top-level module for sed_vis
 from .version import __version__
-from agents import *
-from config.hparams import hparams
+
+# Import all submodules
+from . import pamai

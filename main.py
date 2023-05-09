@@ -12,8 +12,8 @@ from __future__ import absolute_import, division
 from simple_parsing import ArgumentParser
 
 import wandb
-from config.hparams import hparams
-from agents import *
+from pamai.config.hparams import hparams
+from pamai.agents import *
 # from apex import amp
 parser = ArgumentParser()
 # automatically add arguments for all the fields of the classes in hparams:
